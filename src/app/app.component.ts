@@ -33,35 +33,19 @@ ngOnInit(): void {
   this.getEmployes();
 }
 getEmployes(){
+//NOVO NOVO NOVO NOVO NOVO NOVO NOVO NOVO NOVO NOVO NOVO NOVO NOVO NOVO NOVO NOVO
   this.httpClient.get<any>('https://rc-vault-fap-live-1.azurewebsites.net/api/gettimeentries?code=vO17RnE8vuzXzPJo5eaLLjXjmRW07law99QTD90zat9FfOQJKKUcgQ==').subscribe(
-    (    response: employesData[])=>{
-      
-    function groupBy(list:any, keyGetter:any,) {
-      const map = new Map();
-      list.forEach((item:any) => {
-           const key = keyGetter(item);
-           const collection = map.get(key);
-           if (!collection) {
-               map.set(key, [item]);
-           } else {
-               collection.push(item);
-           }
-      });
-      return map;
-  }
-  let uniqueChars: any[] = [];
-  this.employes.forEach((element) => {
-      if (!uniqueChars.includes(element.EmployeeName)) {
-          uniqueChars.push(element.EmployeeName);
+    //responce je array koji ima id, empName ...
+    (    response : { Id: number, EmployeeName: string,EntryNotes:string,StarTimeUtc:Date,EndTimeUtc:Date }[])=>{
+    //za svaki pojedinacni responce proveri da li employes(employes.every) sadrzi trenutni responce
+      response.forEach(element => {
+        //ako ne postoji EmployeeName tj. ako se ne podudaraju, dodaj element 
+          if(this.employes.every(x=>x.EmployeeName!=element.EmployeeName)){
+            this.employes.push(element)
+          }
+        });
       }
-  });
-console.warn(this.employes=uniqueChars);
-  // const grouped = groupBy(response, (response: { EmployeeName: string; }) => response.EmployeeName);
-  //    response.forEach(x=>{
-  //    });
-    }
-  );
-  
-}
+    );
+  }
 }
 
